@@ -19,7 +19,7 @@ class TestWhoAmI(unittest.TestCase):
         self.assertEqual(whoami(), "test_whoami")
 
 class TestRetrieveArgs(unittest.TestCase):
-
+    print(f"Running {whoami()}...")
     @elapsed()
     def test_retrieve_args_good(self):
         fake_output = FakeOutput()
@@ -51,7 +51,7 @@ class TestRetrieveArgs(unittest.TestCase):
         self.assertTrue(any("[UnknwonException]:" in s for s in fake_output.lines))
 
 class TestElapsedDecorator(unittest.TestCase):
-
+    print(f"Running {whoami()}...")
     @elapsed()
     def test_elapsed_returns_and_prints(self):
         fake_output = FakeOutput()
