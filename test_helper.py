@@ -2,7 +2,9 @@ import io
 import sys
 import unittest
 
-from src.helper import whoami, retrieve_args, elapsed
+from threading import Lock
+
+from src.helper import whoami, retrieve_args, elapsed, acquire_lock
 
 class FakeOutput():
     def __init__(self):
@@ -11,6 +13,17 @@ class FakeOutput():
     def __call__(self, msg):
         self.lines.append(str(msg))
 
+
+class TestAcquireLock(unittest.TestCase):
+    print(f"Running {whoami()}...")
+    @elapsed()
+    def test_acquire_lock(self):
+        lock = Lock()
+        with acquire_lock(lock) as acquired:
+            if not acquired:
+                self.fail("Foring failure in unittest")
+
+        self.assertEqual(acquired, True)
 
 class TestWhoAmI(unittest.TestCase):
     print(f"Running {whoami()}...")

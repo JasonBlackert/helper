@@ -2,16 +2,27 @@ import sys
 import time
 import inspect
 
+from contextlib import contextmanager
 from threading import Lock
 from functools import wraps
 
+DEFAULT_LOCK_TIMEOUT_S = 0.001 # 1 ms
 ELAPSED_DECIMAL_PLACE = 5
 
 def whoami():
     return inspect.stack()[1].function
 
-def acquire(lock: Lock, timeout=0.5):
+@contextmanager
+def acquire_lock(lock: Lock, timeout: float = DEFAULT_LOCK_TIMEOUT_S) -> Iterator[bool]:
+    """Wrapper method for acquiring and auto-releasing locks"""
     print(f"acquiring lock: {lock}")
+    acquired = lock.acquire(timeout=timeout)
+
+    try:
+        yield acquired
+    finally:
+        if acquired:
+            lock.release()
 
 def retrieve_args(cast = float, argv=None, out=print) -> tuple(float):
     try:
