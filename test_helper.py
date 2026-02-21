@@ -11,14 +11,6 @@ logging.basicConfig(filename='test.log', level=logging.INFO)
 
 shared_lock = Lock()
 
-class FakeOutput():
-    def __init__(self):
-        self.lines = []
-
-    def __call__(self, msg):
-        self.lines.append(str(msg))
-
-
 class TestAcquireLock(unittest.TestCase):
     print(f"Running {whoami()}...")
 
@@ -30,12 +22,12 @@ class TestAcquireLock(unittest.TestCase):
 
         self.assertEqual(acquired, True)
 
-    def test_acquire_lock_fail(self):
-        with acquire_lock(shared_lock) as acquired:
-            if not acquired:
-                self.fail("Forcing failure")
+class FakeOutput():
+    def __init__(self):
+        self.lines = []
 
-            self.assertEqual(acquired, True)
+    def __call__(self, msg):
+        self.lines.append(str(msg))
 
 class TestWhoAmI(unittest.TestCase):
     print(f"Running {whoami()}...")
