@@ -2,7 +2,7 @@ import io
 import sys
 import unittest
 
-from inc.helper import whoami, retrieve_args, elapsed
+from src.helper import whoami, retrieve_args, elapsed
 
 class FakeOutput():
     def __init__(self):

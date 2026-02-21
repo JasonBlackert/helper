@@ -2,12 +2,16 @@ import sys
 import time
 import inspect
 
+from threading import Lock
 from functools import wraps
 
 ELAPSED_DECIMAL_PLACE = 5
 
 def whoami():
     return inspect.stack()[1].function
+
+def acquire(lock: Lock, timeout=0.5):
+    print(f"acquiring lock: {lock}")
 
 def retrieve_args(cast = float, argv=None, out=print) -> tuple(float):
     try:

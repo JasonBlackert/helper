@@ -1,7 +1,7 @@
 import unittest
 
 from src.calculation import add, sub
-from inc.helper import whoami, elapsed
+from src.helper import whoami, elapsed
 
 class TestAddFunction(unittest.TestCase):
     print(f"Running {whoami()}...")
