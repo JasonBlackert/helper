@@ -1,10 +1,13 @@
 import sys
 import time
 import inspect
+import logging
 
 from contextlib import contextmanager
 from threading import Lock
 from functools import wraps
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_LOCK_TIMEOUT_S = 0.001 # 1 ms
 ELAPSED_DECIMAL_PLACE = 5
@@ -15,7 +18,7 @@ def whoami():
 @contextmanager
 def acquire_lock(lock: Lock, timeout: float = DEFAULT_LOCK_TIMEOUT_S) -> Iterator[bool]:
     """Wrapper method for acquiring and auto-releasing locks"""
-    print(f"acquiring lock: {lock}")
+    logger.debug(f"acquiring lock: {lock}")
     acquired = lock.acquire(timeout=timeout)
 
     try:

@@ -1,10 +1,15 @@
 import io
 import sys
 import unittest
+import logging
 
 from threading import Lock
 
 from src.helper import whoami, retrieve_args, elapsed, acquire_lock
+
+logging.basicConfig(filename='test.log', level=logging.INFO)
+
+shared_lock = Lock()
 
 class FakeOutput():
     def __init__(self):
@@ -16,14 +21,21 @@ class FakeOutput():
 
 class TestAcquireLock(unittest.TestCase):
     print(f"Running {whoami()}...")
+
     @elapsed()
     def test_acquire_lock(self):
-        lock = Lock()
-        with acquire_lock(lock) as acquired:
+        with acquire_lock(shared_lock, timeout=0.5) as acquired:
             if not acquired:
-                self.fail("Foring failure in unittest")
+                self.fail("Forcing failure in unittest")
 
         self.assertEqual(acquired, True)
+
+    def test_acquire_lock_fail(self):
+        with acquire_lock(shared_lock) as acquired:
+            if not acquired:
+                self.fail("Forcing failure")
+
+            self.assertEqual(acquired, True)
 
 class TestWhoAmI(unittest.TestCase):
     print(f"Running {whoami()}...")
