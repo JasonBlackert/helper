@@ -5,7 +5,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from inc.helper import retrieve_args
+from src.helper import retrieve_args
 
 def add(addends: tuple(float) = (0,0)) -> float:
     return sum(addends)
