@@ -7,7 +7,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-logging.basicConfig(filename='logs/test.log', level=logging.INFO)
+logging.basicConfig(filename='logs/unittest.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 from calculation import add, sub

@@ -15,7 +15,7 @@ from config import Configuration, load_json
 CONFIGURATION_PATH = "share/configuration.json"
 configuration = load_json(CONFIGURATION_PATH)
 
-logging.basicConfig(filename='logs/test.log', level=logging.INFO)
+logging.basicConfig(filename='logs/unittest.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 

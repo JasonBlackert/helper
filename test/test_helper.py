@@ -11,7 +11,7 @@ if parent_dir not in sys.path:
 
 from helper import whoami, retrieve_args, elapsed, acquire_lock
 
-logging.basicConfig(filename='logs/test.log', level=logging.INFO)
+logging.basicConfig(filename='logs/unittest.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 shared_lock = Lock()
