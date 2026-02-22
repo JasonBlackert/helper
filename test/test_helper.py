@@ -11,14 +11,15 @@ if parent_dir not in sys.path:
 
 from helper import whoami, retrieve_args, elapsed, acquire_lock
 
-logging.basicConfig(filename='test.log', level=logging.INFO)
+logging.basicConfig(filename='logs/test.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 shared_lock = Lock()
 
 class TestAcquireLock(unittest.TestCase):
-    print(f"Running {whoami()}...")
+    logger.info(f"Running {whoami()}...")
 
-    @elapsed()
+    @elapsed(out=logger.info)
     def test_acquire_lock(self):
         with acquire_lock(shared_lock, timeout=0.5) as acquired:
             if not acquired:
@@ -34,14 +35,14 @@ class FakeOutput():
         self.lines.append(str(msg))
 
 class TestWhoAmI(unittest.TestCase):
-    print(f"Running {whoami()}...")
-    @elapsed()
+    logger.info(f"Running {whoami()}...")
+    @elapsed(out=logger.info)
     def test_whoami(self):
         self.assertEqual(whoami(), "test_whoami")
 
 class TestRetrieveArgs(unittest.TestCase):
-    print(f"Running {whoami()}...")
-    @elapsed()
+    logger.info(f"Running {whoami()}...")
+    @elapsed(out=logger.info)
     def test_retrieve_args_good(self):
         fake_output = FakeOutput()
         argv = ["helper.py", "1.25", "2.5", "-3.5"]
@@ -52,7 +53,7 @@ class TestRetrieveArgs(unittest.TestCase):
         self.assertEqual(len(fake_output.lines), 1)
         self.assertTrue("[InputArguments]" in s for s in fake_output.lines)
 
-    @elapsed()
+    @elapsed(out=logger.info)
     def test_retrie_args_no_args(self):
         fake_output = FakeOutput()
         argv = ["helper.py"]
@@ -61,7 +62,7 @@ class TestRetrieveArgs(unittest.TestCase):
         self.assertEqual(result, ())
         self.assertTrue(any("[InputArguments]:" in s for s in fake_output.lines))
 
-    @elapsed()
+    @elapsed(out=logger.info)
     def test_retrieve_args_bad_cast(self):
         fake_output = FakeOutput()
         argv = ["helper.py", "discover"]
@@ -72,8 +73,8 @@ class TestRetrieveArgs(unittest.TestCase):
         self.assertTrue(any("[UnknwonException]:" in s for s in fake_output.lines))
 
 class TestElapsedDecorator(unittest.TestCase):
-    print(f"Running {whoami()}...")
-    @elapsed()
+    logger.info(f"Running {whoami()}...")
+    @elapsed(out=logger.info)
     def test_elapsed_returns_and_prints(self):
         fake_output = FakeOutput()
 
