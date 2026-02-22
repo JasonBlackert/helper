@@ -13,16 +13,27 @@ DEFAULT_LOCK_TIMEOUT_S = 0.001 # 1 ms
 ELAPSED_DECIMAL_PLACE = 5
 
 
-def _init_command_set(self, obj: object= None):
-    self.command_set = { name: getattr(obj, name) for name in dir(obj) if callable(getattr(obj, name)) and not name.startswith("_")}
-    
-    undesired_methods = [ "__init__" ]
+def init_command_set(obj: object= None):
+    logger.debug(f"Initializing {obj} command set")
+    if obj is None:
+        return {}
+
+    # Public callables
+    command_set = {
+        name: getattr(obj, name)
+        for name in dir(obj)
+        if callable(getattr(obj, name)) and not name.startswith("_")
+    }
+
+    undesired_methods = [ "test_method" ]
     for method in undesired_methods:
-        self.command_set.pop(method, None)
+        command_set.pop(method, None)
 
-    self.command_set.update({key.replace("_", " "): value for key, value in self.command_set.items() if "_" in key})
+    aliases = {name.replace("_", " "): fn for name, fn in command_set.items() if "_" in name}
+    command_set.update(aliases)
 
-    print(f"Populated command set = { {self.command_set} }")
+    logger.debug(f"Populated command set = [ {command_set.keys()} ]")
+    return command_set
 
 def whoami():
     return inspect.stack()[1].function
