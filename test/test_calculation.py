@@ -1,7 +1,13 @@
+import os
+import sys
 import unittest
 
-from src.calculation import add, sub
-from src.helper import whoami, elapsed
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from calculation import add, sub
+from helper import whoami, elapsed
 
 class TestAddFunction(unittest.TestCase):
     print(f"Running {whoami()}...")
