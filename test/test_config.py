@@ -32,5 +32,9 @@ class TestConfiguration(unittest.TestCase):
         result = load_json(CONFIGURATION_PATH).get("unittest", "invalid")
         self.assertEqual(result, "DO_NOT_CHANGE")
 
+    def test_config_setattr(self):
+        config = Configuration(load_json(CONFIGURATION_PATH))
+        self.assertEqual(config.unittest, "DO_NOT_CHANGE")
+
 if __name__ == "__main__":
     unittest.main()
