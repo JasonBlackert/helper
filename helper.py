@@ -39,7 +39,7 @@ def whoami():
     return inspect.stack()[1].function
 
 @contextmanager
-def acquire_lock(lock: Lock, timeout: float = DEFAULT_LOCK_TIMEOUT_S) -> Iterator[bool]:
+def acquire_lock(lock: Lock, timeout: float = DEFAULT_LOCK_TIMEOUT_S): # -> Iterator[bool]:
     """Wrapper method for acquiring and auto-releasing locks"""
     logger.debug(f"acquiring lock: {lock}")
     acquired = lock.acquire(timeout=timeout)
@@ -50,7 +50,7 @@ def acquire_lock(lock: Lock, timeout: float = DEFAULT_LOCK_TIMEOUT_S) -> Iterato
         if acquired:
             lock.release()
 
-def retrieve_args(cast = float, argv=None, out=print) -> tuple(float):
+def retrieve_args(cast = float, argv=None, out=print): # -> tuple(float):
     try:
         if argv is None:
             argv = sys.argv
