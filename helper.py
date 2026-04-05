@@ -13,6 +13,14 @@ DEFAULT_LOCK_TIMEOUT_S = 0.001 # 1 ms
 ELAPSED_DECIMAL_PLACE = 5
 
 
+def elect(peers: dict) -> tuple:
+    """Returns (primary_hostname, fallback_hostname) from the peer table.
+    Ranked by earliest start_time; hostname is the tiebreaker for ties."""
+    ranked = sorted(peers.items(), key=lambda kv: (kv[1]["start_time"], kv[0]))
+    primary = ranked[0][0] if len(ranked) >= 1 else None
+    fallback = ranked[1][0] if len(ranked) >= 2 else None
+    return primary, fallback
+
 def init_command_set(obj: object= None):
     logger.debug(f"Initializing {obj} command set")
     if obj is None:
